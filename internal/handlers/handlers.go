@@ -12,13 +12,27 @@ import (
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	htmlContent, err := os.ReadFile("../index.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	paths := []string{
+		"index.html",
+		"./index.html",
+		"../index.html",
+		"../../index.html",
+		"../../../index.html",
+	}
+
+	var htmlContent []byte
+	var err error
+
+	for _, path := range paths {
+		htmlContent, err = os.ReadFile(path)
+		if err == nil {
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			w.Write(htmlContent)
+			return
+		}
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.Write(htmlContent)
+	w.Write([]byte(htmlContent))
 }
 
 func UploadHandler(w http.ResponseWriter, r *http.Request) {
