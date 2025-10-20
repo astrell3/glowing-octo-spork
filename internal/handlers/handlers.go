@@ -67,9 +67,10 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 
 	response := fmt.Sprintf(
-		"Original: %s\nOutput: %s\n\n%s",
+		"Original: %s\nOutput: %s\n\nOriginal text: %s\nConverted: %s",
 		header.Filename,
 		outputFilename,
+		fileContent,
 		converted,
 	)
 	w.Write([]byte(response))
